@@ -50,9 +50,9 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up">
-            <Link to="/order">
+            <Link to="/auth?mode=signup">
               <Button variant="hero" size="xl">
-                Place Order
+                Get Started
                 <ArrowRight className="w-5 h-5" />
               </Button>
             </Link>

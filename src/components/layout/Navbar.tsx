@@ -49,12 +49,12 @@ const Navbar = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Link to="/admin">
+            <Link to="/auth">
               <Button variant="ghost" size="sm">
-                Admin
+                Login
               </Button>
             </Link>
-            <Link to="/order">
+            <Link to="/auth?mode=signup">
               <Button size="sm">Get Started</Button>
             </Link>
           </div>
@@ -92,12 +92,12 @@ const Navbar = () => {
               </Link>
             ))}
             <div className="pt-4 flex flex-col gap-2">
-              <Link to="/admin" onClick={() => setIsOpen(false)}>
+              <Link to="/auth" onClick={() => setIsOpen(false)}>
                 <Button variant="outline" className="w-full">
-                  Admin Panel
+                  Login
                 </Button>
               </Link>
-              <Link to="/order" onClick={() => setIsOpen(false)}>
+              <Link to="/auth?mode=signup" onClick={() => setIsOpen(false)}>
                 <Button className="w-full">Get Started</Button>
               </Link>
             </div>
