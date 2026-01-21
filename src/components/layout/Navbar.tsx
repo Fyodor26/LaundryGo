@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Sparkles, LogOut } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isLoggedIn, user, logout } = useAuth();
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -13,6 +16,11 @@ const Navbar = () => {
     { name: "Dashboard", path: "/dashboard" },
     { name: "Pricing", path: "/pricing" },
   ];
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -49,14 +57,28 @@ const Navbar = () => {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Link to="/auth">
-              <Button variant="ghost" size="sm">
-                Login
-              </Button>
-            </Link>
-            <Link to="/auth?mode=signup">
-              <Button size="sm">Get Started</Button>
-            </Link>
+            {isLoggedIn ? (
+              <>
+                <span className="text-sm text-muted-foreground">
+                  Hi, {user?.name}
+                </span>
+                <Button variant="ghost" size="sm" onClick={handleLogout}>
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link to="/auth">
+                  <Button variant="ghost" size="sm">
+                    Login
+                  </Button>
+                </Link>
+                <Link to="/auth?mode=signup">
+                  <Button size="sm">Get Started</Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -92,14 +114,28 @@ const Navbar = () => {
               </Link>
             ))}
             <div className="pt-4 flex flex-col gap-2">
-              <Link to="/auth" onClick={() => setIsOpen(false)}>
-                <Button variant="outline" className="w-full">
-                  Login
-                </Button>
-              </Link>
-              <Link to="/auth?mode=signup" onClick={() => setIsOpen(false)}>
-                <Button className="w-full">Get Started</Button>
-              </Link>
+              {isLoggedIn ? (
+                <>
+                  <span className="text-sm text-muted-foreground text-center py-2">
+                    Hi, {user?.name}
+                  </span>
+                  <Button variant="outline" className="w-full" onClick={() => { handleLogout(); setIsOpen(false); }}>
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link to="/auth" onClick={() => setIsOpen(false)}>
+                    <Button variant="outline" className="w-full">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link to="/auth?mode=signup" onClick={() => setIsOpen(false)}>
+                    <Button className="w-full">Get Started</Button>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
