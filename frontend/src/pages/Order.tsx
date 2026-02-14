@@ -85,7 +85,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   };
 
   try {
-    const res = await fetch("http://localhost:5000/api/orders", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
