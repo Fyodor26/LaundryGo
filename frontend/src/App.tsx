@@ -39,22 +39,18 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
-           <Route path="/" element={<Index />} />
-
-    <Route
-      path="/order"
-      element={
-        <ProtectedRoute>
-          <Order />
-        </ProtectedRoute>
-      }
-    />
-
+            <Route
+              path="/order"
+              element={
+                <ProtectedRoute>
+                  <Order />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="*" element={<NotFound />} />
-              
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

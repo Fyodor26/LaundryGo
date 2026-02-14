@@ -12,9 +12,7 @@ const cookieParser=require('cookie-parser')
 const { connectDB } = require("./connection");
 const dashRoute=require('./routes/dashboard')
 
-require("dotenv").config();
-
-connectDB(process.env.MONGO_URL)
+connectDB("mongodb://127.0.0.1:27017/laundryGo")
   .then(() => {
     console.log("MOngodb connected");
   })
@@ -25,19 +23,17 @@ connectDB(process.env.MONGO_URL)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: "http://localhost:8080",
   credentials: true 
 }));
 app.use(cookieParser());
+app.get("/api/me", authentication, (req, res) => {
+  return res.json({ user: req.user });
+});
 app.use("/api/orders", orderRoute);
 app.use("/user", userRoute);
 app.use('/dashboard', dashRoute);
 
-
-
-app.get("/api/me", authentication, (req, res) => {
-  return res.json({ user: req.user });
-});
 app.listen(5000, () => {
   console.log("Listining on port 5000");
 });

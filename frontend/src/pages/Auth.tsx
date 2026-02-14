@@ -38,8 +38,8 @@ const Auth = () => {
 
     const url =
       mode === "signup"
-        ?`${import.meta.env.VITE_API_URL}/user/signup`
-        : `${import.meta.env.VITE_API_URL}/user/login`;
+        ? "http://localhost:5000/user/signup"
+        : "http://localhost:5000/user/login";
 
     const payload =
       mode === "signup"
