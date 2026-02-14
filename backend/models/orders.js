@@ -3,6 +3,20 @@ const { type } = require("os");
 const User = require("./users");
 
 const orderSchema = new mongoose.Schema({
+  razorpayOrderId:{ 
+    type: String
+  },
+razorpayPaymentId: {
+  type: String
+},
+razorpaySignature: {
+  type: String
+},
+paymentStatus: {
+  type: String,
+  enum: ["pending", "paid", "failed"],
+  default: "pending",
+},
   service: {
     type: String,
     required: true,

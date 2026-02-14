@@ -1,6 +1,8 @@
-import { Link } from "react-router-dom";
+import { Link, Routes } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin } from "lucide-react";
+
+
 
 const HeroSection = () => {
   return (
@@ -50,12 +52,13 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up">
-            <Link to="/auth?mode=signup">
-              <Button variant="hero" size="xl">
-                Get Started
-                <ArrowRight className="w-5 h-5" />
-              </Button>
-            </Link>
+            <Link to="/order">
+  <Button variant="hero" size="xl">
+    Get Started
+    <ArrowRight className="w-5 h-5" />
+  </Button>
+</Link>
+
             <Link to="/dashboard">
               <Button variant="hero-outline" size="xl">
                 <MapPin className="w-5 h-5" />

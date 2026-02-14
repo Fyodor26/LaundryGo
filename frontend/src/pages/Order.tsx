@@ -74,35 +74,92 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   const orderData = {
     laundryType,
-    quantity: 1,
+    quantity,
     pickupDate: date,
-    timeSlot: timeSlot,
+    timeSlot,
     location: hostel,
     room: Number(room),
     phone: Number(phone),
     notes: notes || "",
-    estimatedPrice: estimatedPrice, // calculate this earlier
+    estimatedPrice,
   };
 
   try {
-    const res = await fetch("http://localhost:5000/api/orders", {
+    // 1️⃣ Create order in backend and get Razorpay order
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials:"include",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
       body: JSON.stringify(orderData),
     });
 
-    if (!res.ok) throw new Error("Order failed");
+    if (!res.ok) throw new Error("Order creation failed");
 
-    setSubmitted(true);
-    toast({
-      title: "Order Placed! 🎉",
-      description: "We'll pick up your laundry at the scheduled time.",
-    });
+    const { orderId, razorpayOrderId, amount, currency } = await res.json();
 
+    // 2️⃣ Initialize Razorpay checkout
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY_ID, // frontend key
+      amount: amount,
+      currency: currency,
+      name: "Laundry Service",
+      description: selectedType?.name,
+      order_id: razorpayOrderId,
+      handler: async function (response: any) {
+        // 3️⃣ Verify payment on backend
+        try {
+          const verifyRes = await fetch(
+            `${import.meta.env.VITE_API_URL}/api/orders/verify-payment`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature,
+                
+              }),
+            }
+          );
+
+          const verifyData = await verifyRes.json();
+          console.log(verifyData);
+          
+
+          if (verifyData.success) {
+            setSubmitted(true);
+            toast({
+              title: "Payment Successful! 🎉",
+              description: "Your order is confirmed.",
+            });
+          } else {
+            toast({
+              title: "Payment Failed",
+              description: "Something went wrong. Try again.",
+              variant: "destructive",
+            });
+          }
+        } catch (err) {
+          toast({
+            title: "Error",
+            description: "Payment verification failed.",
+            variant: "destructive",
+          });
+        }
+      },
+      prefill: {
+        name: "", // you can prefill user's name
+        email: "", // prefill email if available
+        contact: phone,
+      },
+      theme: { color: "#3399cc" },
+    };
+
+    const rzp = new (window as any).Razorpay(options);
+    rzp.open();
   } catch (err) {
+    console.error(err);
     toast({
       title: "Error",
       description: "Could not place order. Try again.",
