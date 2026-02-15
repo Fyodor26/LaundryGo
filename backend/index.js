@@ -1,4 +1,5 @@
 const express = require("express");
+const port=process.env.PORT || 5000;
 const bcrypt = require("bcrypt");
 const app = express();
 const Order = require("./models/orders");
@@ -11,6 +12,7 @@ const cors = require("cors");
 const cookieParser=require('cookie-parser')
 const { connectDB } = require("./connection");
 const dashRoute=require('./routes/dashboard')
+require('dotenv').config();  
 
 connectDB(process.env.MONGO_URL)
   .then(() => {
@@ -34,6 +36,6 @@ app.use("/api/orders", orderRoute);
 app.use("/user", userRoute);
 app.use('/dashboard', dashRoute);
 
-app.listen(5000, () => {
+app.listen(port, () => {
   console.log("Listining on port 5000");
 });
