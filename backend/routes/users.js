@@ -41,13 +41,12 @@ router.post("/login", async (req, res) => {
     if (!match) {
       return res.status(400).send({ error: "invalid password" });
     }
-    
-    
     const token = setuserId(user);
     res.cookie("cookie", token,  {
   httpOnly: true,
   secure: true,       // REQUIRED in production (HTTPS)
-  sameSite: "none",   // REQUIRED for cross-site (Netlify → Render)
+  sameSite: "None",
+  credentials: true   // REQUIRED for cross-site (Netlify → Render)
 });
     return res.json({ redirectToHome: true });
   } catch (err) {
