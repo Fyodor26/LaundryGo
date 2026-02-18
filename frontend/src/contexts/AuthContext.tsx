@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(userData);
     } else {
       // fallback: refetch user
-      fetch("http://localhost:5000/api/me", {
+      fetch(`${import.meta.env.VITE_API_URL}/api/me`, {
         credentials: "include",
       })
         .then(res => res.ok ? res.json() : null)
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = async () => {
-    await fetch("http://localhost:5000/user/logout", {
+    await fetch(`${import.meta.env.VITE_API_URL}/user/logout`, {
       method: "POST",
       credentials: "include",
     });
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // ✅ Check login from cookie on app load
   useEffect(() => {
-    fetch("http://localhost:5000/api/me", {
+    fetch(`${import.meta.env.VITE_API_URL}/api/me`, {
       credentials: "include",
     })
       .then(res => res.ok ? res.json() : null)
