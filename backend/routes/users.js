@@ -44,7 +44,11 @@ router.post("/login", async (req, res) => {
     
     
     const token = setuserId(user);
-    res.cookie("cookie", token);
+    res.cookie("cookie", token,  {
+  httpOnly: true,
+  secure: true,       // REQUIRED in production (HTTPS)
+  sameSite: "none",   // REQUIRED for cross-site (Netlify → Render)
+});
     return res.json({ redirectToHome: true });
   } catch (err) {
     console.log(err);
