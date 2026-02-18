@@ -45,8 +45,7 @@ router.post("/login", async (req, res) => {
     res.cookie("cookie", token,  {
   httpOnly: true,
   secure: true,       // REQUIRED in production (HTTPS)
-  sameSite: "None",
-  credentials: true   // REQUIRED for cross-site (Netlify → Render)
+  sameSite: "none",  // REQUIRED for cross-site (Netlify → Render)
 });
     return res.json({ redirectToHome: true });
   } catch (err) {
@@ -57,7 +56,8 @@ router.post("/login", async (req, res) => {
 router.post("/logout", (req, res) => {
   res.clearCookie("cookie", {
     httpOnly: true,
-    sameSite: "lax",
+    secure: true,
+    sameSite: "none"
   });
   return res.json({ success: true });
 });

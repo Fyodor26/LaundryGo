@@ -14,6 +14,7 @@ const { connectDB } = require("./connection");
 const dashRoute=require('./routes/dashboard')
 require('dotenv').config();  
 console.log("MONGO_URL:", process.env.MONGO_URL);
+app.set("trust proxy", 1);
 
 connectDB(process.env.MONGO_URL)
   .then(() => {
