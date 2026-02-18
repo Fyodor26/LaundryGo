@@ -12,7 +12,7 @@ function setuserId(user) {
 function getuserId(token) {
   if (!token) return null;
   const x=jwt.verify(token, secret);
-  return x
+  return x;
 }
 
 module.exports = { setuserId, getuserId };
