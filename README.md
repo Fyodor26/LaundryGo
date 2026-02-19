@@ -184,3 +184,9 @@ Subscription plans
 Nakul Tayade
 B.Tech Computer Engineering Student
 Full Stack Developer
+
+## 📜 License
+
+MIT License
+
+
